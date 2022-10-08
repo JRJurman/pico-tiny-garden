@@ -1,0 +1,77 @@
+pico-8 cartridge // http://www.pico-8.com
+version 38
+__lua__
+function _init()
+	build_input(20,44)
+end
+
+function _update60()
+	update_input()
+end
+
+function _draw()
+	draw_input()
+end
+-->8
+-- input logic
+function build_input(x,y)
+	input={}
+	input.val_index=1
+	input.cur_index=1
+	input.value=""
+	input.x=x
+	input.y=y
+	alphabet="abcdefghijklmnopqrstuvwxyz "
+end
+
+function update_input()
+ if (btnp(⬆️)) input.val_index+=1 
+ if (btnp(⬇️)) input.val_index-=1
+ if (btnp(➡️)) input.cur_index+=1 
+ if (btnp(⬅️)) input.cur_index-=1
+ 
+ -- setting the string
+ if (btnp(➡️)) then
+  input.value=input.value..sub(alphabet,input.val_index,input.val_index)
+ end
+
+ if (btnp(⬅️)) then
+  input.value=sub(input.value,0, input.cur_index-1)
+ end
+
+ input.val_index = input.val_index % 27
+end
+
+function draw_cursor()
+	spr(3,4+(input.cur_index*4),-4)
+	spr(3,4+(input.cur_index*4),12,1,1,false,true)
+	sub_string=sub(alphabet,input.val_index,input.val_index)
+	print(input.value..sub_string,10,6,7)
+end
+
+function draw_input()
+ camera(-input.x, -input.y)
+	cls(3)
+	palt(14)
+	spr(1)
+	for i=1,9 do
+	 spr(2,i*8,0)
+	end
+	spr(1,80,0,1,1,true)
+	spr(1,0,8,1,1,false,true)
+	for i=1,9 do
+	 spr(2,i*8,8,1,1,false,true)
+	end
+	spr(1,80,8,1,1,true,true)
+ draw_cursor()
+	camera(0,0)
+end
+__gfx__
+00000000e7e7e77777777777eeeeeeee000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000077e7700000000000eeeeeeee000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700700eee7000000000000eee00eee000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000770007770000000000000ee0760ee000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00077000e700000000000000e077760e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700700700000000000000007777760000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000700000000000000007777760000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000007000000000000000e000000e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
